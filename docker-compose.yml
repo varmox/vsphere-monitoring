@@ -17,8 +17,8 @@ services:
       - influxdb
     links:
       - influxdb
-    ports:
-    - '8125:8125'
+    #ports:
+    #- '8125:8125'
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.2
