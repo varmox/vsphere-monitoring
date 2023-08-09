@@ -6,26 +6,25 @@ networks:
     driver_opts:
       parent: ens192
 
-
 services:
   telegraf:
-    image: telegraf
+    image: telegraf:1.27-alpine
+    hostname: telegraf
     container_name: telegraf
     restart: always
     volumes:
     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - influxdb
-    links:
-      - influxdb
-    ports:
-    - '8125:8125'
+    #ports:
+    #- '8125:8125'
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.2
 
   influxdb:
-    image: influxdb:2.6-alpine
+    image: influxdb:2.7-alpine
+    hostname: influxdb
     container_name: influxdb
     restart: always
     environment:
@@ -35,14 +34,14 @@ services:
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.3
-
     ports:
       - '8086:8086'
     volumes:
-      - influxdb_data:/var/lib/influxdb
+      - influxdb_data:/var/lib/influxdb2
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
+    hostname: grafana
     container_name: grafana-server
     restart: always
     depends_on:
@@ -51,8 +50,6 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_INSTALL_PLUGINS=
-    links:
-      - influxdb
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.4
