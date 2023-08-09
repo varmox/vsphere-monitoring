@@ -15,8 +15,6 @@ services:
     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - influxdb
-    links:
-      - influxdb
     #ports:
     #- '8125:8125'
     networks:
@@ -34,7 +32,6 @@ services:
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.3
-
     ports:
       - '8086:8086'
     volumes:
@@ -50,8 +47,6 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_INSTALL_PLUGINS=
-    links:
-      - influxdb
     networks:
       ipvlan0:
         ipv4_address: 172.29.31.4
